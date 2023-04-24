@@ -1,5 +1,6 @@
 package edu.joseph.course.entites;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -13,6 +14,8 @@ public class Order implements Serializable {
     @Id // anotações JPA Id Identifica PK para o BD
     @GeneratedValue(strategy = GenerationType.IDENTITY) // anotação JPA auto incrementa o ID
     private Long id;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant moment;
 
     @ManyToOne // anotação JPA cria um relacionamento de muito para um ex(muito pedidos para um cliente)
@@ -20,7 +23,7 @@ public class Order implements Serializable {
     private User client;
 
 
-    public Order(){
+    public Order() {
     }
 
     public Order(Long id, Instant moment, User client) {
