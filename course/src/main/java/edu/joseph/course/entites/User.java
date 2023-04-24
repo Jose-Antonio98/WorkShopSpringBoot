@@ -20,7 +20,7 @@ public class User  implements Serializable {
     private String phone;
     private String password;
 
-    @JsonIgnore
+    @JsonIgnore // anotação para que na criação do json seja ignorado um lado da relação entre as entidades
     @OneToMany(mappedBy = "client") //// anotação JPA relação um para muitos  mapeado por client
     private List<Order> orders = new ArrayList<>();
 
