@@ -1,5 +1,6 @@
 package edu.joseph.course.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.joseph.course.entites.pk.OrderItemPK;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -10,23 +11,24 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_order_item")
-public class OrdemItem implements Serializable {
+public class OrderItem implements Serializable {
 
     @EmbeddedId
-    private OrderItemPK id;
+    private OrderItemPK id = new OrderItemPK();
     private Integer quantity;
     private double price;
 
-    public OrdemItem() {
+    public OrderItem() {
     }
 
-    public OrdemItem(Order order, Product product, Integer quantity, double price) {
+    public OrderItem(Order order, Product product, Integer quantity, double price) {
         id.setOrder(order);
         id.setProduct(product);
         this.quantity = quantity;
         this.price = price;
     }
 
+    @JsonIgnore
     public Order getOrder(){
         return id.getOrder();
     }
@@ -62,7 +64,7 @@ public class OrdemItem implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OrdemItem ordemItem)) return false;
+        if (!(o instanceof OrderItem ordemItem)) return false;
         return Objects.equals(id, ordemItem.id);
     }
 
