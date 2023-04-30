@@ -4,11 +4,10 @@ import edu.joseph.course.entites.User;
 import edu.joseph.course.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -19,14 +18,23 @@ public class UserResources {
     private UserService userservice;
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){
+    public ResponseEntity<List<User>> findAll() {
         List<User> allUsers = userservice.findALl();
         return ResponseEntity.ok().body(allUsers);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id){
+    public ResponseEntity<User> findById(@PathVariable Long id) {
         var obj = userservice.findById(id);
         return ResponseEntity.ok().body(obj);
     }
+
+    @PostMapping
+    public ResponseEntity<User> inserUser(@RequestBody User obj){
+        obj = userservice.insert(obj);
+        URI  uri = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).body(obj);
+    }
+
 }
